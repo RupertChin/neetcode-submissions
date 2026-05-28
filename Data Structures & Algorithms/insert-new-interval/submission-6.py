@@ -1,0 +1,24 @@
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        """
+        Approach:
+        - iterate through intervals until start >= new start
+            - save this position
+        - check for overlap: continue iterating
+            - any interval with overlap, combine ranges into new interval
+            - remove the old overlapping interval
+        - insert the new interval at the initially saved position
+        """
+
+        res = []
+        for i, interval in enumerate(intervals):
+            if interval[1] < newInterval[0]:
+                res.append(interval)
+            elif interval[0] > newInterval[1]:
+                res.append(newInterval)
+                return res + intervals[i:]
+            else:
+                newInterval[0] = min(newInterval[0], interval[0])
+                newInterval[1] = max(newInterval[1], interval[1])
+        res.append(newInterval)
+        return res
